@@ -1,0 +1,16 @@
+Best trial value (mlogloss): 0.8541
+Best hyperparameters: {'learning_rate': 0.05855215548834308, 'n_estimators': 420, 'max_depth': 10, 'min_child_weight': 6, 'subsample': 0.6824478905380973, 'colsample_bytree': 0.999716441651914, 'reg_alpha': 4.260406871188772, 'reg_lambda': 3.548017762093588, 'gamma': 1.0299557625337208}
+Using optimized model with learning rate: 0.059
+Classification report
+              precision    recall  f1-score   support
+
+           0       0.64      0.30      0.41      7110
+           1       0.61      0.85      0.71     20839
+           2       0.52      0.31      0.39     10981
+           3       0.57      0.64      0.61      1070
+
+    accuracy                           0.60     40000
+   macro avg       0.59      0.53      0.53     40000
+weighted avg       0.59      0.60      0.57     40000
+
+Best model with learning rate 0.05855215548834308 selected and visualized!
