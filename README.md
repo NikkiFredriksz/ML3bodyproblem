@@ -4,6 +4,8 @@
 -verdeling in features geanalyseerd, komt ws gewoon overeen met wat in paper staat met hoe data is gegenereerd (natuurkundige argumenten voor density distributions)
 -klasse 3 verschilt t meeste dus die is het makkelijkst te scheiden
 
+26-11: Olaf: XGBoost resultaten geupload; 75 hyperparameter optimisation trials, classificatie 0 vs 1 vs 2 vs 3. 75 hyperparameter optimisation trials, binary classificatie 012 vs 3 (met extra weights op 3). 75 hyperparameter optimisation trials, binary classificatie 023 vs 1. Wat nog gedaan moet worden: 75 hyperparameter optimisation trials, classificatie 0 vs 1 vs 2 vs 3 met weights. 75 hyperparameter optimisation trials, classificatie 0 vs 1 vs 2, met en zonder weights.
+
 makkelijkste manier om data in te lezen (werkt voor GC, YSC, dat soort zonder de extra kolom)
 import matplotlib.pyplot as plt
 import numpy as np
