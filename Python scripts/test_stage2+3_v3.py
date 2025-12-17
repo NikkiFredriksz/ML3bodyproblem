@@ -38,10 +38,12 @@ THRESH_S2 = 0.70
 EPOCHS_S3 = 140   # Stopped at 140 (end of cycle) for optimal convergence
 N_ROTATIONS = 2   # 4 Rotations -> 8 Views (4 Standard + 4 Swapped)
 
-args = argparse.ArgumentParser()
-args.add_argument("train_file", type=str, help="path naar train .dat")
-args.add_argument("test_file", type=str, help="path naar test .dat")
-args.add_argument("keyword", type=str, help="keyword")
+parser = argparse.ArgumentParser()
+parser.add_argument("train_file", type=str, help="path naar train .dat")
+parser.add_argument("test_file", type=str, help="path naar test .dat")
+parser.add_argument("keyword", type=str, help="keyword")
+
+args = parser.parse_args()
 
 TRAIN_FILE = args.train_file
 TEST_FILE = args.test_file
