@@ -27,7 +27,7 @@ import argparse
 import os
 #%% 
 #inputdata
-os.makedirs("results", exist_ok=True)
+
 n_trials=100
 n_jobs=-1
 epochstry=1000
@@ -60,6 +60,7 @@ args = parser.parse_args()
 # Data inlezen
 # ----------------------
 weight_decay=args.weight_decay
+os.makedirs(f"results_wd{weight_decay}", exist_ok=True)
 df = pd.read_csv(args.train_file, delim_whitespace=True, header=0)
 df_test = pd.read_csv(args.test_file, delim_whitespace=True, header=0)
 #%% periodicity en E's
@@ -287,7 +288,7 @@ for study_name in study_names:
         )
     disp.plot(cmap=plt.cm.Blues)
     plt.title(f'Confusion Matrix (lr={lr}) ' +study_name)
-    plt.savefig("./results/confusionmatrix "+study_name)
+    plt.savefig(f"./results_wd{weight_decay}/confusionmatrix "+study_name)
     plt.figure(figsize=(10,6))
     for lr in learningrates:
         epochs_plot = [e for l,e,_ in accuracies if l==lr]
@@ -296,7 +297,7 @@ for study_name in study_names:
     plt.xlabel("epoch")
     plt.ylabel("accuracy")
     plt.title("NN Accuracy "+study_name)
-    plt.savefig("./results/accuracy "+study_name)
+    plt.savefig(f"./results_wd{weight_decay}/accuracy "+study_name)
     
     
     plt.figure(figsize=(10,6))
@@ -307,7 +308,7 @@ for study_name in study_names:
     plt.ylabel("loss")
     plt.title("Loss per epoch "+study_name)
     plt.legend()
-    plt.savefig("./results/loss "+study_name)
+    plt.savefig(f"./results_wd{weight_decay}/loss "+study_name)
     
     plt.figure(figsize=(10,6))
     for i in range(3):
@@ -318,4 +319,4 @@ for study_name in study_names:
     plt.ylabel("recall")
     plt.title(f"Recall per class (lr={learningrates[0]}) "+study_name)
     plt.legend()
-    plt.savefig("./results/recall "+study_name)
+    plt.savefig(f"./results_wd{weight_decay}/recall "+study_name)
