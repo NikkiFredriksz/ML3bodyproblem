@@ -30,7 +30,7 @@ import os
 n_trials=100
 n_jobs=-1
 epochstry=1000
-epochtest=3000
+epochtest=1000
 # study_name= "min_recall"
 study_names=["min_recall","f1","weighted_recall1","weighted_recall2","Q-mean"]
 # --- Traindata inlezen ---
@@ -58,7 +58,7 @@ for col in angle_columns:
     df_test[col + "_sin"] = np.sin(df_test[col])
     df_test[col + "_cos"] = np.cos(df_test[col])
 df = df.drop(columns=angle_columns)
-dt_test=df_test.drop(columns=angle_columns)
+df_test=df_test.drop(columns=angle_columns)
 
 df["E_bin"]=df["m1"]*df["m2"]/df["a_pc"]
 df["E_kin3"]=df["m3"]*df["v_km_s"]**2
@@ -74,7 +74,7 @@ df_test["E_pot"]=(df_test["m1"]+df_test["m2"])*df_test["m3"]/df_test["b_pc"]
 df_test["mratio1"]=df_test["m1"]/df_test["m2"]
 df_test["mratio2"]=(df_test["m1"]+df_test["m2"])/df_test["m3"]
 df_test["tbinary"]=df_test["a_pc"]**1.5*(df_test["m1"]+df_test["m2"])**(-0.5)
-df_test["t_ratio"]=df_test["tbinary"]/df["t_coal_yr"]
+df_test["t_ratio"]=df_test["tbinary"]/df_test["t_coal_yr"]
 featuresold = [
     "m1", "m2", "m3", "a_pc", "e", "b_pc",
     "phi_sin", "phi_cos",
@@ -170,15 +170,15 @@ for study_name in study_names:
                 rec = recall_score(y_true, y_pred, average=None) #optimaliseer voor min recall
                 return rec.min()
             if (study_name=="f1"):
-                f1 = f1_score(y_test.numpy(), preds, average='macro')
+                f1 = f1_score(y_test.numpy(), y_pred, average='macro')
                 return f1  # Optuna maximaliseert macro-F1
             if (study_name=="weighted_recall1"):
-                rec = recall_score(y_test.numpy(), preds, average=None)
+                rec = recall_score(y_test.numpy(), y_pred, average=None)
                 w = np.array([0.4, 0.2, 0.4])   # voorbeeld
                 score = np.sum(w * rec)
                 return score
             if (study_name=="weighted_recall2"):
-                rec = recall_score(y_test.numpy(), preds, average=None)
+                rec = recall_score(y_test.numpy(), y_pred, average=None)
                 w = np.array([0.4, 0.1, 0.4])   # voorbeeld
                 score = np.sum(w * rec)
                 return score
@@ -222,8 +222,8 @@ for study_name in study_names:
     for lr_idx, lr in enumerate(learningrates):
         model = SimpleNN(input_dim=X_train.shape[1], hidden_dim=64)  # <-- nieuw model
         optimizer = optim.Adam(model.parameters(), lr=lr)
-        # criterion = nn.CrossEntropyLoss(weight=weights)
-        criterion = nn.CrossEntropyLoss()
+        criterion = nn.CrossEntropyLoss(weight=weights)
+        # criterion = nn.CrossEntropyLoss()
         for epoch_idx, epoch in enumerate(epochs):
         
             optimizer.zero_grad()
@@ -268,7 +268,7 @@ for study_name in study_names:
     cm = confusion_matrix(y_true, preds)
     
     disp = ConfusionMatrixDisplay.from_predictions(
-        y_true, y_pred,
+        y_true, preds,
         display_labels=[0,1,2],
         cmap=plt.cm.Blues,
         normalize='true'     # <–– dit is de key
@@ -306,4 +306,5 @@ for study_name in study_names:
     plt.ylabel("recall")
     plt.title(f"Recall per class (lr={learningrates[0]}) "+study_name)
     plt.legend()
+
     plt.savefig("./results/recall "+study_name)
