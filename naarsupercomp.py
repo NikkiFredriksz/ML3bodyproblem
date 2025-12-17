@@ -30,7 +30,7 @@ import os
 n_trials=100
 n_jobs=-1
 epochstry=1000
-epochtest=3000
+epochtest=1000
 # study_name= "min_recall"
 study_names=["min_recall","f1","weighted_recall1","weighted_recall2","Q-mean"]
 # --- Traindata inlezen ---
@@ -306,4 +306,5 @@ for study_name in study_names:
     plt.ylabel("recall")
     plt.title(f"Recall per class (lr={learningrates[0]}) "+study_name)
     plt.legend()
+
     plt.savefig("./results/recall "+study_name)
