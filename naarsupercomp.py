@@ -43,6 +43,7 @@ study_names=["min_recall","f1","weighted_recall1","weighted_recall2","Q-mean"]
 parser = argparse.ArgumentParser()
 parser.add_argument("train_file", type=str, help="path naar train .dat")
 parser.add_argument("test_file",  type=str, help="path naar test .dat")
+parser.add_argument("Keyword", type=str, help="The model keyword")
 args = parser.parse_args()
 
 # ----------------------
