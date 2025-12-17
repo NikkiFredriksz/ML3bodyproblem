@@ -25,6 +25,14 @@ from sklearn.metrics import ConfusionMatrixDisplay
 import optuna
 import argparse
 import os
+
+import logging
+import sys
+
+# Optuna logging to show progress
+optuna.logging.get_logger("optuna").addHandler(logging.StreamHandler(sys.stdout))
+optuna.logging.set_verbosity(optuna.logging.INFO)
+
 #%% 
 #inputdata
 n_trials=100
