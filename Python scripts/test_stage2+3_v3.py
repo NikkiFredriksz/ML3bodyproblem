@@ -24,6 +24,9 @@ STORAGE_DB = "sqlite:///three_body_cascade_v23.db" # Version 23
 MODEL_S2_FILE = "stage2_int_v23.pth"
 MODEL_S3_FILE = "stage3_exc_v23.pth"
 
+# OUTPUT DIRECTORY FOR FIGURES
+RESULTS_DIR = "./results/"
+
 # OPTIMIZATION SETTINGS
 N_TRIALS = 15              # Trials per stage
 EPOCHS_OPT = 10            # Fast epochs for finding params
@@ -38,10 +41,12 @@ THRESH_S2 = 0.70
 EPOCHS_S3 = 140   # Stopped at 140 (end of cycle) for optimal convergence
 N_ROTATIONS = 2   # 4 Rotations -> 8 Views (4 Standard + 4 Swapped)
 
-args = argparse.ArgumentParser()
-args.add_argument("train_file", type=str, help="path naar train .dat")
-args.add_argument("test_file", type=str, help="path naar test .dat")
-args.add_argument("keyword", type=str, help="keyword")
+parser = argparse.ArgumentParser()
+parser.add_argument("train_file", type=str, help="path naar train .dat")
+parser.add_argument("test_file", type=str, help="path naar test .dat")
+parser.add_argument("--weight-decay", type=float, default=0, help="keyword")
+
+args = parser.parse_args()
 
 TRAIN_FILE = args.train_file
 TEST_FILE = args.test_file
@@ -385,6 +390,9 @@ if __name__ == "__main__":
     print(f"Device: {device}")
     physics = ThreeBodyPhysics()
     
+    # Create results directory if it doesn't exist
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    
     # 0. INITIAL SCALER FIT
     print("Fitting Scaler...")
     ds_fit = CascadeDataset(TRAIN_FILE, physics, mode='ionization', augment=False)
@@ -460,14 +468,61 @@ if __name__ == "__main__":
     
     cm = confusion_matrix(true_labels, final_preds)
     cm_norm = cm.astype('float') / (cm.sum(axis=1)[:, np.newaxis] + 1e-9)
+    
+    # Plot 1: Confusion Matrix
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm_norm, annot=True, fmt='.2f', cmap='Blues', xticklabels=['Flyby', 'Exch 2-3', 'Exch 1-3'], yticklabels=['Flyby', 'Exch 2-3', 'Exch 1-3'])
     plt.title('Final Pipeline (S2 Focal + S3 Rotations + 41 Features)')
-    plt.show()
+    plt.tight_layout()
+    confusion_matrix_path = os.path.join(RESULTS_DIR, "confusion_matrix.png")
+    plt.savefig(confusion_matrix_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved confusion matrix to: {confusion_matrix_path}")
     
+    # Plot 2: Training Dynamics
     plt.figure(figsize=(10, 5))
     plt.plot(loss_s2, label='Stage 2 Loss')
     plt.plot(loss_s3, label='Stage 3 Loss')
-    plt.legend()
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
     plt.title("Training Dynamics")
-    plt.show()
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    training_dynamics_path = os.path.join(RESULTS_DIR, "training_dynamics.png")
+    plt.savefig(training_dynamics_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved training dynamics to: {training_dynamics_path}")
+    
+    # Plot 3: Learning Rate Schedule (Optional)
+    plt.figure(figsize=(10, 5))
+    plt.plot(lr_s2, label='Stage 2 Learning Rate')
+    plt.plot(lr_s3, label='Stage 3 Learning Rate')
+    plt.xlabel('Epoch')
+    plt.ylabel('Learning Rate')
+    plt.title("Learning Rate Schedule")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    lr_schedule_path = os.path.join(RESULTS_DIR, "learning_rate_schedule.png")
+    plt.savefig(lr_schedule_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved learning rate schedule to: {lr_schedule_path}")
+    
+    # Plot 4: Stage 2 Probability Distribution
+    plt.figure(figsize=(10, 6))
+    plt.hist(probs_s2[preds_s2 == 0], bins=50, alpha=0.5, label='Predicted Flyby (S2)', color='blue')
+    plt.hist(probs_s2[preds_s2 == 1], bins=50, alpha=0.5, label='Predicted Interaction (S2)', color='red')
+    plt.axvline(x=THRESH_S2, color='black', linestyle='--', label=f'Threshold = {THRESH_S2}')
+    plt.xlabel('Probability of Interaction')
+    plt.ylabel('Count')
+    plt.title('Stage 2: Probability Distribution')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    s2_prob_dist_path = os.path.join(RESULTS_DIR, "stage2_probability_distribution.png")
+    plt.savefig(s2_prob_dist_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved stage 2 probability distribution to: {s2_prob_dist_path}")
+    
+    print(f"\nAll figures saved to directory: {RESULTS_DIR}")

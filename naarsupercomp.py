@@ -29,7 +29,7 @@ import os
 import logging
 import sys
 
-# Optuna logging to show progress
+# Optuna logging voor in slurm file
 optuna.logging.get_logger("optuna").addHandler(logging.StreamHandler(sys.stdout))
 optuna.logging.set_verbosity(optuna.logging.INFO)
 
@@ -51,7 +51,13 @@ study_names=["min_recall","f1","weighted_recall1","weighted_recall2","Q-mean"]
 parser = argparse.ArgumentParser()
 parser.add_argument("train_file", type=str, help="path naar train .dat")
 parser.add_argument("test_file",  type=str, help="path naar test .dat")
-parser.add_argument("Keyword", type=str, help="The model keyword")
+parser.add_argument(
+    "--weight-decay",
+    type=float,
+    default=1e-4,
+    help="L2 regularization strength"
+)
+
 args = parser.parse_args()
 
 # ----------------------
@@ -142,62 +148,103 @@ for study_name in study_names:
                 nn.Linear(input_dim, hidden_dim),
                 nn.ReLU(),
                 
-                nn.Linear(hidden_dim, 3)     #must match with end classes
+                nn.Linear(hidden_dim, 3)    
             )
             
        
         def forward(self, x):
             return self.net(x)
     def objective(trial):
+        # Voeg trial nummers toe aan logging
+        print(f"Trial {trial.number} started", flush=True)
         # Optuna laat class-gewichten kiezen
         w0 = trial.suggest_float('w0', 0.1, 1.7)
         w1 = trial.suggest_float('w1', 0.4, 1)
         w2 = trial.suggest_float('w2', 1, 1.7)
-        weights = np.array([w0, w1,w2])
+        weights = np.array([w0, w1, w2])
         weights = weights / weights.sum()
         weights_tensor = torch.tensor(weights, dtype=torch.float32)
-    
+        
+        # Vroeg stoppen hyperparameters (Optuna zelf laten kiezen)
+        patience = trial.suggest_int('patience', 10, 50, step=5)
+        min_delta = trial.suggest_float('min_delta', 0.0001, 0.01, log=True)
+        
         # Nieuw model voor elke trial
         model = SimpleNN(input_dim=X_train.shape[1], hidden_dim=64)
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
         criterion = nn.CrossEntropyLoss(weight=weights_tensor)
-    
-        # Train op X_train
-        for _ in range(epochstry):  # kort aantal epochs per trial
+        
+        # Train met vroeg stoppen
+        best_val_score = -np.inf
+        epochs_without_improvement = 0
+        best_model_state = None
+        
+        # Train met vroeg stoppen
+        for epoch in range(epochstry):
             optimizer.zero_grad()
             logits = model(X_train)
             loss = criterion(logits, y_train)
             loss.backward()
             optimizer.step()
+            
+            # Validatie om de 5 epochs om tijd te besparen
+            if epoch % 5 == 0:
+                with torch.no_grad():
+                    val_logits = model(X_test)
+                    y_pred = torch.argmax(val_logits, dim=1).numpy()
+                    y_true = y_test.numpy()
+                    
+                    if study_name == "min_recall":
+                        rec = recall_score(y_true, y_pred, average=None)
+                        val_score = rec.min()
+                    elif study_name == "f1":
+                        val_score = f1_score(y_true, y_pred, average='macro')
+                    elif study_name == "weighted_recall1":
+                        rec = recall_score(y_true, y_pred, average=None)
+                        w = np.array([0.4, 0.2, 0.4])
+                        val_score = np.sum(w * rec)
+                    elif study_name == "weighted_recall2":
+                        rec = recall_score(y_true, y_pred, average=None)
+                        w = np.array([0.4, 0.1, 0.4])
+                        val_score = np.sum(w * rec)
+                    elif study_name == "Q-mean":
+                        rec = recall_score(y_true, y_pred, average=None)
+                        val_score = len(rec) / np.sum(1.0 / (rec + 1e-12))
+                    else:
+                        val_score = f1_score(y_true, y_pred, average='macro')
+                    
+                    # Optuna pruning
+                    trial.report(val_score, epoch)
+                    if trial.should_prune():
+                        raise optuna.TrialPruned()
+                    
+                    # Vroeg stoppen logica
+                    if val_score > best_val_score + min_delta:
+                        best_val_score = val_score
+                        epochs_without_improvement = 0
+                        best_model_state = model.state_dict().copy()
+                    else:
+                        epochs_without_improvement += 1
+                        
+                    if epochs_without_improvement >= patience:
+                        print(f"Trial {trial.number}: Early stopping at epoch {epoch}")
+                        break
+        
+        # Laadt beste model voor laatste evaluatie
+        if best_model_state is not None:
+            model.load_state_dict(best_model_state)
+        
+        return best_val_score
     
-        # Validatie op X_test
-        with torch.no_grad():
-            val_logits = model(X_test)
-            y_pred = torch.argmax(val_logits, dim=1).numpy()
-            y_true=y_test.numpy()
-            if (study_name=="min_recall"):
-                rec = recall_score(y_true, y_pred, average=None) #optimaliseer voor min recall
-                return rec.min()
-            if (study_name=="f1"):
-                f1 = f1_score(y_test.numpy(), y_pred, average='macro')
-                return f1  # Optuna maximaliseert macro-F1
-            if (study_name=="weighted_recall1"):
-                rec = recall_score(y_test.numpy(), y_pred, average=None)
-                w = np.array([0.4, 0.2, 0.4])   # voorbeeld
-                score = np.sum(w * rec)
-                return score
-            if (study_name=="weighted_recall2"):
-                rec = recall_score(y_test.numpy(), y_pred, average=None)
-                w = np.array([0.4, 0.1, 0.4])   # voorbeeld
-                score = np.sum(w * rec)
-                return score
-            if (study_name=="Q-mean"):
-                rec = recall_score(y_true, y_pred, average=None)
-                score = len(rec) / np.sum(1.0 / (rec + 1e-12))
-                return score
     
+    # Optuna pruner
+    pruner = optuna.pruners.MedianPruner(
+        n_startup_trials=5,  # Niet de eerst 5 trials prunen
+        n_warmup_steps=10,   # Niet de eerste 10 stappen van elke trial prunen
+        interval_steps=1
+    )
     
-    study = optuna.create_study(direction='maximize',study_name=study_name)
+    study = optuna.create_study(direction='maximize', study_name=study_name, pruner=pruner)
     study.optimize(objective, n_trials=n_trials,n_jobs=n_jobs)
     
     print("Best weights: "+study_name, study.best_params)
@@ -268,7 +315,8 @@ for study_name in study_names:
     
     #%%
     
-    os.makedirs("results", exist_ok=True)
+    results_dir = "results"
+    os.makedirs(results_dir, exist_ok=True)
     plt.figure()
     with torch.no_grad():
         preds = torch.argmax(model(X_test), dim=1).numpy()
@@ -280,11 +328,11 @@ for study_name in study_names:
         y_true, preds,
         display_labels=[0,1,2],
         cmap=plt.cm.Blues,
-        normalize='true'     # <–– dit is de key
+        normalize='true'     
         )
     disp.plot(cmap=plt.cm.Blues)
     plt.title(f'Confusion Matrix (lr={lr}) ' +study_name)
-    plt.savefig("./results/confusionmatrix "+study_name)
+    plt.savefig(f"{results_dir}/confusionmatrix_{study_name}.png")
     plt.figure(figsize=(10,6))
     for lr in learningrates:
         epochs_plot = [e for l,e,_ in accuracies if l==lr]
@@ -293,7 +341,7 @@ for study_name in study_names:
     plt.xlabel("epoch")
     plt.ylabel("accuracy")
     plt.title("NN Accuracy "+study_name)
-    plt.savefig("./results/accuracy "+study_name)
+    plt.savefig(f"{results_dir}/accuracy_{study_name}.png")
     
     
     plt.figure(figsize=(10,6))
@@ -304,7 +352,7 @@ for study_name in study_names:
     plt.ylabel("loss")
     plt.title("Loss per epoch "+study_name)
     plt.legend()
-    plt.savefig("./results/loss "+study_name)
+    plt.savefig(f"{results_dir}/loss_{study_name}.png")
     
     plt.figure(figsize=(10,6))
     for i in range(3):
@@ -316,4 +364,4 @@ for study_name in study_names:
     plt.title(f"Recall per class (lr={learningrates[0]}) "+study_name)
     plt.legend()
 
-    plt.savefig("./results/recall "+study_name)
+    plt.savefig(f"{results_dir}/recall_{study_name}.png")
