@@ -12,34 +12,37 @@ import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix
 import torch.nn.functional as F
+from joblib import Parallel, delayed  # <--- FOR PARALLEL PROCESSING
 import argparse
-
 
 # ==========================================
 # CONFIGURATION
 # ==========================================
-STORAGE_DB = "sqlite:///three_body_cascade_v23.db" # Version 23
+# SYSTEM SETTINGS
+N_JOBS = -1                # Number of CPUs to use (-1 = All 24 cores)
+torch.set_num_threads(6)   # Limit PyTorch threads to avoid thrashing if running multiple scripts
+
+STORAGE_DB = "sqlite:///three_body_cascade_v24.db" 
+TRAIN_FILE = "train3body.dat"
+TEST_FILE = "test3body.dat"
 
 # OUTPUT MODELS
-MODEL_S2_FILE = "stage2_int_v23.pth"
-MODEL_S3_FILE = "stage3_exc_v23.pth"
-
-# OUTPUT DIRECTORY FOR FIGURES
-RESULTS_DIR = "./results/"
+MODEL_S2_FILE = "stage2_int_v24.pth"
+MODEL_S3_FILE = "stage3_exc_v24.pth"
 
 # OPTIMIZATION SETTINGS
-N_TRIALS = 15              # Trials per stage
-EPOCHS_OPT = 10            # Fast epochs for finding params
+N_TRIALS = 15              
+EPOCHS_OPT = 10            
 
 # FINAL TRAINING SETTINGS
-# Stage 2 (Imbalanced): Focal Loss, Strict Threshold
+# Stage 2 (Imbalanced)
 EPOCHS_S2 = 140
 WEIGHT_S2 = 2.0   
 THRESH_S2 = 0.70
 
-# Stage 3 (Balanced): CrossEntropy, Augmentation, TTA
-EPOCHS_S3 = 140   # Stopped at 140 (end of cycle) for optimal convergence
-N_ROTATIONS = 2   # 4 Rotations -> 8 Views (4 Standard + 4 Swapped)
+# Stage 3 (Balanced)
+EPOCHS_S3 = 140   
+N_ROTATIONS = 4   # 4 Rotations -> 8 Views per sample
 
 parser = argparse.ArgumentParser()
 parser.add_argument("train_file", type=str, help="path naar train .dat")
@@ -70,7 +73,6 @@ class ThreeBodyPhysics:
         a, e, b = row['a_pc'], row['e'], row['b_pc']
         phi, theta, psi = row['phi'], row['theta'], row['psi']
         
-        # Ensure radians
         if abs(phi) > 2 * np.pi or abs(theta) > 2 * np.pi or abs(psi) > 2 * np.pi:
             phi, theta, psi = np.radians(phi), np.radians(theta), np.radians(psi)
 
@@ -159,10 +161,10 @@ class ThreeBodyPhysics:
         ]) # Total = 41
 
 # ==========================================
-# 2. DATASET
+# 2. PARALLEL DATASET
 # ==========================================
 class CascadeDataset(Dataset):
-    def __init__(self, filepath, physics_engine, mode='interaction', scaler=None, augment=False, n_rotations=0):
+    def __init__(self, filepath, physics_engine, mode='interaction', scaler=None, augment=False, n_rotations=0, n_jobs=N_JOBS):
         if not os.path.exists(filepath):
             print(f"Error: {filepath} not found.")
             sys.exit()
@@ -171,65 +173,62 @@ class CascadeDataset(Dataset):
         self.feature_cols = ['m1', 'm2', 'm3', 'a_pc', 'e', 'b_pc', 'phi', 'theta', 'psi', 'f', 'v_km_s', 'Ecc_Anomaly', 't_coal_yr']
         raw_outcomes = data['OUTCOME'].astype(int).values
 
-        # MODE SELECTION
-        if mode == 'ionization': # For scaler fit
-            self.y = (raw_outcomes == 3).astype(int)
+        # MODE FILTERING
+        if mode == 'ionization': 
+            self.y_base = (raw_outcomes == 3).astype(int)
             data_subset = data.copy()
-            
-        elif mode == 'interaction': # Stage 2
+        elif mode == 'interaction': 
             mask = raw_outcomes != 3
             data_subset = data[mask].copy()
-            raw_outcomes = raw_outcomes[mask]
-            self.y = (raw_outcomes > 0).astype(int) # 1=Exchange, 0=Flyby
-            
-        elif mode == 'exchange': # Stage 3
+            self.y_base = (raw_outcomes[mask] > 0).astype(int)
+        elif mode == 'exchange': 
             mask = (raw_outcomes == 1) | (raw_outcomes == 2)
             data_subset = data[mask].copy()
-            raw_outcomes = raw_outcomes[mask]
-            self.y = (raw_outcomes == 2).astype(int) # 1=Exch1-3(Outcome 2), 0=Exch2-3(Outcome 1)
+            self.y_base = (raw_outcomes[mask] == 2).astype(int)
 
-        # GENERATE FEATURES
-        X_list = []
-        y_list = []
+        print(f"  -> Generating tasks for {len(data_subset)} samples ({n_jobs if n_jobs!=-1 else 'All'} CPUs)...")
         
-        # Base Data
-        base_states = [physics_engine.convert_row_to_state(row, rotation_offset=0.0) for _, row in data_subset[self.feature_cols].iterrows()]
-        X_list.extend(base_states)
-        y_list.extend(self.y)
+        # PREPARE TASKS FOR PARALLEL EXECUTION
+        rows = data_subset[self.feature_cols].to_dict('records')
+        tasks = []
 
-        # AUGMENTATION
+        # 1. Base Data
+        for i, row in enumerate(rows):
+            tasks.append((row, 0.0, False, self.y_base[i]))
+
+        # 2. Augmentation
         if augment:
-            # Angles
+            # Calculate angles
             if n_rotations > 0:
                 angles = np.linspace(0, 2*np.pi, n_rotations + 1)[:-1]
-                if n_rotations > 1: angles = angles[1:] # Skip 0
+                if n_rotations > 1: angles = angles[1:]
             else:
                 angles = []
 
-            # 1. Rotations
-            for angle in angles:
-                rot_states = [physics_engine.convert_row_to_state(row, rotation_offset=angle) for _, row in data_subset[self.feature_cols].iterrows()]
-                X_list.extend(rot_states)
-                y_list.extend(self.y)
-            
-            # 2. Swaps
-            swapped = data_subset[self.feature_cols].copy()
-            swapped['m1'], swapped['m2'] = data_subset['m2'], data_subset['m1']
-            
-            if mode == 'exchange': y_swapped = 1 - self.y # Flip label
-            else: y_swapped = self.y # Keep label (Exch is Exch)
-            
-            # Swap Base
-            swap_states = [physics_engine.convert_row_to_state(row, rotation_offset=0.0) for _, row in swapped.iterrows()]
-            X_list.extend(swap_states)
-            y_list.extend(y_swapped)
-            
-            # Swap Rotations
-            for angle in angles:
-                rot_swap_states = [physics_engine.convert_row_to_state(row, rotation_offset=angle) for _, row in swapped.iterrows()]
-                X_list.extend(rot_swap_states)
-                y_list.extend(y_swapped)
+            for i, row in enumerate(rows):
+                base_lbl = self.y_base[i]
+                
+                # A. Rotations
+                for angle in angles:
+                    tasks.append((row, angle, False, base_lbl))
+                
+                # B. Swaps
+                if mode == 'exchange': swap_lbl = 1 - base_lbl
+                else: swap_lbl = base_lbl
+                
+                # Swap Base
+                tasks.append((row, 0.0, True, swap_lbl))
+                
+                # Swap Rotations
+                for angle in angles:
+                    tasks.append((row, angle, True, swap_lbl))
 
+        # EXECUTE PARALLEL JOBS
+        results = Parallel(n_jobs=n_jobs)(
+            delayed(self._process_item)(physics_engine, task) for task in tasks
+        )
+        
+        X_list, y_list = zip(*results)
         self.X = np.array(X_list, dtype=np.float32)
         self.y = np.array(y_list, dtype=np.int64)
 
@@ -240,6 +239,16 @@ class CascadeDataset(Dataset):
             self.scaler = StandardScaler()
             self.X = self.scaler.fit_transform(self.X)
             
+    def _process_item(self, physics, task):
+        row, angle, swap, label = task
+        # Handle Swap by modifying dict copy
+        row_proc = row.copy()
+        if swap:
+            row_proc['m1'], row_proc['m2'] = row['m2'], row['m1']
+        
+        state = physics.convert_row_to_state(row_proc, rotation_offset=angle)
+        return state, label
+
     def __len__(self): return len(self.y)
     def __getitem__(self, idx): return torch.tensor(self.X[idx]), torch.tensor(self.y[idx], dtype=torch.long)
 
@@ -390,30 +399,25 @@ if __name__ == "__main__":
     print(f"Device: {device}")
     physics = ThreeBodyPhysics()
     
-    # Create results directory if it doesn't exist
-    os.makedirs(RESULTS_DIR, exist_ok=True)
-    
-    # 0. INITIAL SCALER FIT
+    # 0. SCALER FIT (Use Parallel loading even for scaler to be fast)
     print("Fitting Scaler...")
-    ds_fit = CascadeDataset(TRAIN_FILE, physics, mode='ionization', augment=False)
+    ds_fit = CascadeDataset(TRAIN_FILE, physics, mode='ionization', augment=False, n_jobs=N_JOBS)
     
     # --- STAGE 2: INTERACTION ---
     print("\n=== STAGE 2 SETUP ===")
-    ds_s2_opt = CascadeDataset(TRAIN_FILE, physics, mode='interaction', scaler=ds_fit.scaler, augment=False)
-    params_s2 = run_optimization("opt_s2_v23", ds_s2_opt, device, mode='interaction')
+    ds_s2_opt = CascadeDataset(TRAIN_FILE, physics, mode='interaction', scaler=ds_fit.scaler, augment=False, n_jobs=N_JOBS)
+    params_s2 = run_optimization("opt_s2_v24", ds_s2_opt, device, mode='interaction')
     
-    # Train S2 (Augmentation + Focal Loss)
-    ds_s2_final = CascadeDataset(TRAIN_FILE, physics, mode='interaction', scaler=ds_fit.scaler, augment=True)
+    ds_s2_final = CascadeDataset(TRAIN_FILE, physics, mode='interaction', scaler=ds_fit.scaler, augment=True, n_jobs=N_JOBS)
     model_s2, loss_s2, lr_s2 = train_final_model("Stage 2", ds_s2_final, params_s2, device, EPOCHS_S2, mode='interaction', weight=WEIGHT_S2)
     torch.save(model_s2.state_dict(), MODEL_S2_FILE)
     
     # --- STAGE 3: EXCHANGE ---
     print("\n=== STAGE 3 SETUP ===")
-    ds_s3_opt = CascadeDataset(TRAIN_FILE, physics, mode='exchange', scaler=ds_fit.scaler, augment=False)
-    params_s3 = run_optimization("opt_s3_v23", ds_s3_opt, device, mode='exchange')
+    ds_s3_opt = CascadeDataset(TRAIN_FILE, physics, mode='exchange', scaler=ds_fit.scaler, augment=False, n_jobs=N_JOBS)
+    params_s3 = run_optimization("opt_s3_v24", ds_s3_opt, device, mode='exchange')
     
-    # Train S3 (Rotations + CrossEntropy)
-    ds_s3_final = CascadeDataset(TRAIN_FILE, physics, mode='exchange', scaler=ds_fit.scaler, augment=True, n_rotations=N_ROTATIONS)
+    ds_s3_final = CascadeDataset(TRAIN_FILE, physics, mode='exchange', scaler=ds_fit.scaler, augment=True, n_rotations=N_ROTATIONS, n_jobs=N_JOBS)
     model_s3, loss_s3, lr_s3 = train_final_model("Stage 3", ds_s3_final, params_s3, device, EPOCHS_S3, mode='exchange')
     torch.save(model_s3.state_dict(), MODEL_S3_FILE)
 
@@ -423,6 +427,9 @@ if __name__ == "__main__":
     df_test = df_test[df_test['OUTCOME'] != 3].copy() 
     true_labels = df_test['OUTCOME'].astype(int).values
     
+    # Note: For evaluation on test set, we just use single thread conversion or standard loop 
+    # because test set is usually small.
+    print(f"Processing Test Set ({len(df_test)} samples)...")
     X_raw = np.array([physics.convert_row_to_state(row) for _, row in df_test[ds_s2_final.feature_cols].iterrows()])
     X_test = torch.tensor(ds_fit.scaler.transform(X_raw), dtype=torch.float32).to(device)
     
@@ -430,7 +437,6 @@ if __name__ == "__main__":
     model_s3.eval()
     final_preds = []
     
-    # TTA Setup
     angles = np.linspace(0, 2*np.pi, N_ROTATIONS + 1)[:-1]
 
     with torch.no_grad():
@@ -438,10 +444,8 @@ if __name__ == "__main__":
         probs_s2 = F.softmax(model_s2(X_test), dim=1)[:, 1].cpu().numpy()
         preds_s2 = (probs_s2 > THRESH_S2).astype(int)
         
-        # S3 PREDICTION (With TTA Averaging)
+        # S3 PREDICTION (With TTA)
         s3_probs_sum = np.zeros(len(df_test))
-        
-        # Average over rotations
         for angle in angles:
             # Standard
             states = [physics.convert_row_to_state(row, rotation_offset=angle) for _, row in df_test[ds_s3_final.feature_cols].iterrows()]
@@ -453,76 +457,27 @@ if __name__ == "__main__":
             df_swap['m1'], df_swap['m2'] = df_swap['m2'], df_swap['m1']
             states_swap = [physics.convert_row_to_state(row, rotation_offset=angle) for _, row in df_swap[ds_s3_final.feature_cols].iterrows()]
             X_swap = torch.tensor(ds_fit.scaler.transform(states_swap), dtype=torch.float32).to(device)
-            probs_swap = F.softmax(model_s3(X_swap), dim=1)[:, 1].cpu().numpy()
-            s3_probs_sum += (1.0 - probs_swap)
+            s3_probs_sum += (1.0 - F.softmax(model_s3(X_swap), dim=1)[:, 1].cpu().numpy())
             
         s3_final_probs = s3_probs_sum / (2 * len(angles))
         preds_s3 = (s3_final_probs > 0.5).astype(int)
         
         for i in range(len(true_labels)):
-            if preds_s2[i] == 0:
-                final_preds.append(0) # Flyby
+            if preds_s2[i] == 0: final_preds.append(0) 
             else:
-                if preds_s3[i] == 0: final_preds.append(1) # Exch 2-3
-                else: final_preds.append(2) # Exch 1-3
+                if preds_s3[i] == 0: final_preds.append(1) 
+                else: final_preds.append(2) 
     
     cm = confusion_matrix(true_labels, final_preds)
     cm_norm = cm.astype('float') / (cm.sum(axis=1)[:, np.newaxis] + 1e-9)
-    
-    # Plot 1: Confusion Matrix
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm_norm, annot=True, fmt='.2f', cmap='Blues', xticklabels=['Flyby', 'Exch 2-3', 'Exch 1-3'], yticklabels=['Flyby', 'Exch 2-3', 'Exch 1-3'])
-    plt.title('Final Pipeline (S2 Focal + S3 Rotations + 41 Features)')
-    plt.tight_layout()
-    confusion_matrix_path = os.path.join(RESULTS_DIR, "confusion_matrix.png")
-    plt.savefig(confusion_matrix_path, dpi=300, bbox_inches='tight')
-    plt.close()
-    print(f"Saved confusion matrix to: {confusion_matrix_path}")
+    plt.title(f'Final Pipeline (41 Feat | S2 Focal | S3 TTA-{N_ROTATIONS})')
+    plt.show()
     
-    # Plot 2: Training Dynamics
     plt.figure(figsize=(10, 5))
     plt.plot(loss_s2, label='Stage 2 Loss')
     plt.plot(loss_s3, label='Stage 3 Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
+    plt.legend()
     plt.title("Training Dynamics")
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.tight_layout()
-    training_dynamics_path = os.path.join(RESULTS_DIR, "training_dynamics.png")
-    plt.savefig(training_dynamics_path, dpi=300, bbox_inches='tight')
-    plt.close()
-    print(f"Saved training dynamics to: {training_dynamics_path}")
-    
-    # Plot 3: Learning Rate Schedule (Optional)
-    plt.figure(figsize=(10, 5))
-    plt.plot(lr_s2, label='Stage 2 Learning Rate')
-    plt.plot(lr_s3, label='Stage 3 Learning Rate')
-    plt.xlabel('Epoch')
-    plt.ylabel('Learning Rate')
-    plt.title("Learning Rate Schedule")
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.tight_layout()
-    lr_schedule_path = os.path.join(RESULTS_DIR, "learning_rate_schedule.png")
-    plt.savefig(lr_schedule_path, dpi=300, bbox_inches='tight')
-    plt.close()
-    print(f"Saved learning rate schedule to: {lr_schedule_path}")
-    
-    # Plot 4: Stage 2 Probability Distribution
-    plt.figure(figsize=(10, 6))
-    plt.hist(probs_s2[preds_s2 == 0], bins=50, alpha=0.5, label='Predicted Flyby (S2)', color='blue')
-    plt.hist(probs_s2[preds_s2 == 1], bins=50, alpha=0.5, label='Predicted Interaction (S2)', color='red')
-    plt.axvline(x=THRESH_S2, color='black', linestyle='--', label=f'Threshold = {THRESH_S2}')
-    plt.xlabel('Probability of Interaction')
-    plt.ylabel('Count')
-    plt.title('Stage 2: Probability Distribution')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.tight_layout()
-    s2_prob_dist_path = os.path.join(RESULTS_DIR, "stage2_probability_distribution.png")
-    plt.savefig(s2_prob_dist_path, dpi=300, bbox_inches='tight')
-    plt.close()
-    print(f"Saved stage 2 probability distribution to: {s2_prob_dist_path}")
-    
-    print(f"\nAll figures saved to directory: {RESULTS_DIR}")
+    plt.show()
