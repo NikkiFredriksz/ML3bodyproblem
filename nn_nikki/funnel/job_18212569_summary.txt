@@ -1,0 +1,11 @@
+Job Summary
+==========
+Job ID: 18212569
+Job Name: ml_naarsupercomparchitecture_funnel_20260109_162751
+Start Time: 09-01-2026 16:28:11
+End Time: 10-01-2026 09:22:18
+Exit Code: 0
+Weight Decay: 0.0001
+Python Script: naarsupercomparchitecture_funnel.py
+Training File: train3body.dat
+Test File: test3body.dat

@@ -1,0 +1,11 @@
+Job Summary
+==========
+Job ID: 18212580
+Job Name: ml_naarsupercomparchitecture_wide_20260109_162826
+Start Time: 09-01-2026 16:28:40
+End Time: 10-01-2026 01:16:41
+Exit Code: 0
+Weight Decay: 0.0001
+Python Script: naarsupercomparchitecture_wide.py
+Training File: train3body.dat
+Test File: test3body.dat

@@ -43,7 +43,12 @@ study_names=["deep","simple","wide","funnel","drop-out"]
 parser = argparse.ArgumentParser()
 parser.add_argument("train_file", type=str, help="path naar train .dat")
 parser.add_argument("test_file",  type=str, help="path naar test .dat")
-parser.add_argument("Keyword", type=str, help="The model keyword")
+parser.add_argument(
+    "--weight-decay",
+    type=float,
+    default=1e-4,
+    help="L2 regularization strength"
+)
 args = parser.parse_args()
 
 # ----------------------

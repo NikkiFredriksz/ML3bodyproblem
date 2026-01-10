@@ -1,0 +1,171 @@
+Job started at 09-01-2026 16:28:40
+Working directory: /scratch-local/okooijman.18212580
+Submission directory: /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/architecture/wide
+Job ID: 18212580
+================================================
+JOB PARAMETERS
+================================================
+Python script: naarsupercomparchitecture_wide.py
+Training file: train3body.dat
+Test file: test3body.dat
+Weight decay: 0.0001
+Job name: ml_naarsupercomparchitecture_wide_20260109_162826
+================================================
+Copying input files to working directory
+Files copied successfully
+Files in working directory:
+total 129
+drwxr-x---.  2 okooijman okooijman     4096 Jan  9 16:28 .
+drwxrwxrwt. 31 root      root        131072 Jan  9 16:28 ..
+-rw-r-----.  1 okooijman okooijman    13087 Jan  9 16:28 naarsupercomparchitecture_wide.py
+-rw-r-----.  1 okooijman okooijman  9785229 Jan  9 16:28 test3body.dat
+-rw-r-----.  1 okooijman okooijman 39137889 Jan  9 16:28 train3body.dat
+Starting Python script at 16:28:42
+/gpfs/scratch1/nodespecific/tcn650/okooijman.18212580/naarsupercomparchitecture_wide.py:64: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df = pd.read_csv(args.train_file, delim_whitespace=True, header=0)
+/gpfs/scratch1/nodespecific/tcn650/okooijman.18212580/naarsupercomparchitecture_wide.py:65: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df_test = pd.read_csv(args.test_file, delim_whitespace=True, header=0)
+[I 2026-01-09 16:28:49,423] A new study created in memory with name: wide
+[I 2026-01-10 01:14:12,372] Trial 3 finished with value: 0.4711630972048285 and parameters: {'w0': 0.936107804800023, 'w1': 0.8500471574134898, 'w2': 1.1268008800931257}. Best is trial 3 with value: 0.4711630972048285.
+[I 2026-01-10 01:14:20,926] Trial 7 finished with value: 0.5266718852520932 and parameters: {'w0': 0.8362640666807555, 'w1': 0.4684146122319611, 'w2': 1.0239401039952079}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:28,343] Trial 5 finished with value: 0.4211846899882641 and parameters: {'w0': 0.5875037137872073, 'w1': 0.6583226985638695, 'w2': 1.5146795804224933}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:29,860] Trial 52 finished with value: 0.47788908994218915 and parameters: {'w0': 1.0902830085630575, 'w1': 0.521284486317769, 'w2': 1.6645768981026032}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:32,871] Trial 19 finished with value: 0.4427308953836539 and parameters: {'w0': 1.3104622194988789, 'w1': 0.43383606879396414, 'w2': 1.652385314656994}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:33,900] Trial 38 finished with value: 0.3180662399005895 and parameters: {'w0': 0.1939984279911931, 'w1': 0.88158325095007, 'w2': 1.355493028524027}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:34,546] Trial 55 finished with value: 0.5167238546724708 and parameters: {'w0': 0.79386098894183, 'w1': 0.48961137918767056, 'w2': 1.0133109308127741}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:34,892] Trial 46 finished with value: 0.3163862191882585 and parameters: {'w0': 0.2121022144650908, 'w1': 0.6010781370178179, 'w2': 1.6485521481580931}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:36,466] Trial 0 finished with value: 0.4160245312715803 and parameters: {'w0': 0.6248382425434463, 'w1': 0.8722309886099342, 'w2': 1.149572321794399}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:36,883] Trial 6 finished with value: 0.4733501367297205 and parameters: {'w0': 1.4037764513971571, 'w1': 0.43578628901495703, 'w2': 1.2981458429712083}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:38,204] Trial 45 finished with value: 0.3596490856401293 and parameters: {'w0': 0.36090620974903265, 'w1': 0.8304549660605851, 'w2': 1.0811298500640054}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:38,206] Trial 53 finished with value: 0.39692166044133115 and parameters: {'w0': 0.568310614285401, 'w1': 0.9030891085470356, 'w2': 1.4924218720240023}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:38,793] Trial 14 finished with value: 0.40871938415273584 and parameters: {'w0': 0.6425189381841402, 'w1': 0.9032201502353827, 'w2': 1.2955147770397342}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:39,574] Trial 20 finished with value: 0.4290639099850646 and parameters: {'w0': 0.5511132718160973, 'w1': 0.5924866102749231, 'w2': 1.3335884984414572}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:40,920] Trial 4 finished with value: 0.3051009824599827 and parameters: {'w0': 0.1520391592408778, 'w1': 0.7924253223841526, 'w2': 1.1157968709412256}. Best is trial 7 with value: 0.5266718852520932.
+[I 2026-01-10 01:14:40,958] Trial 8 finished with value: 0.5276592975506535 and parameters: {'w0': 1.176400043029136, 'w1': 0.41846029565855475, 'w2': 1.025189984657523}. Best is trial 8 with value: 0.5276592975506535.
+[I 2026-01-10 01:14:41,327] Trial 26 finished with value: 0.4319357267259733 and parameters: {'w0': 0.609550786167651, 'w1': 0.5028923777729047, 'w2': 1.4690811748828756}. Best is trial 8 with value: 0.5276592975506535.
+[I 2026-01-10 01:14:42,650] Trial 1 finished with value: 0.5002550285294234 and parameters: {'w0': 1.040977906980434, 'w1': 0.7066419927584717, 'w2': 1.4662628945386047}. Best is trial 8 with value: 0.5276592975506535.
+[I 2026-01-10 01:14:42,653] Trial 29 finished with value: 0.5247589016881306 and parameters: {'w0': 1.3199165698669486, 'w1': 0.7327767944056902, 'w2': 1.4463967090985212}. Best is trial 8 with value: 0.5276592975506535.
+[I 2026-01-10 01:14:43,066] Trial 17 finished with value: 0.5420894475638615 and parameters: {'w0': 1.4068305836105783, 'w1': 0.7120429406006474, 'w2': 1.0051003282840958}. Best is trial 17 with value: 0.5420894475638615.
+[I 2026-01-10 01:14:43,581] Trial 13 finished with value: 0.5535757601317933 and parameters: {'w0': 1.5131162530285884, 'w1': 0.6595542290836951, 'w2': 1.0860370966711403}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:43,643] Trial 37 finished with value: 0.5514105538438595 and parameters: {'w0': 1.6155390892803925, 'w1': 0.7449387152693507, 'w2': 1.5021206987762397}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:43,732] Trial 51 finished with value: 0.46387057459115794 and parameters: {'w0': 1.3572293317771829, 'w1': 0.9756419091244241, 'w2': 1.0025510954947616}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:44,292] Trial 41 finished with value: 0.40383677951926616 and parameters: {'w0': 0.5960538195943904, 'w1': 0.9825692172386081, 'w2': 1.3727160685218602}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:44,579] Trial 35 finished with value: 0.3651819608240459 and parameters: {'w0': 0.39256234989223693, 'w1': 0.43049425964535165, 'w2': 1.6250172995561778}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:45,672] Trial 10 finished with value: 0.44089020459031364 and parameters: {'w0': 0.5026845819373241, 'w1': 0.4950909421504849, 'w2': 1.1510672105038593}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:46,175] Trial 11 finished with value: 0.4676672558934064 and parameters: {'w0': 1.143737871472839, 'w1': 0.43231809294686646, 'w2': 1.496726667270717}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:46,519] Trial 31 finished with value: 0.3348834814024261 and parameters: {'w0': 0.2837398934316237, 'w1': 0.8523923186190473, 'w2': 1.2983406048630037}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:49,588] Trial 21 finished with value: 0.4342135993409979 and parameters: {'w0': 0.7464743465965458, 'w1': 0.9435684656096575, 'w2': 1.4730338113629744}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:49,751] Trial 28 finished with value: 0.46003320097482614 and parameters: {'w0': 1.6441209918345465, 'w1': 0.4722782880080218, 'w2': 1.6186426319731129}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:49,935] Trial 15 finished with value: 0.4966595520114283 and parameters: {'w0': 0.8537598893601657, 'w1': 0.5190677394346161, 'w2': 1.2891348313652327}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:49,939] Trial 32 finished with value: 0.46942845569180447 and parameters: {'w0': 1.0404448918256508, 'w1': 0.9941327410447484, 'w2': 1.6255183107506157}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:51,186] Trial 42 finished with value: 0.5318660141578538 and parameters: {'w0': 1.4836846907298502, 'w1': 0.9049662453187848, 'w2': 1.5793214811316127}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:51,799] Trial 30 finished with value: 0.518776440977525 and parameters: {'w0': 1.6010623477707722, 'w1': 0.8489083224740372, 'w2': 1.1111334485611772}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:52,049] Trial 2 finished with value: 0.38449034718364095 and parameters: {'w0': 0.5426089308658811, 'w1': 0.9156832743483885, 'w2': 1.0565354248708183}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:52,175] Trial 22 finished with value: 0.4621652820317416 and parameters: {'w0': 0.8775510032289229, 'w1': 0.4313888023012634, 'w2': 1.4331243845460526}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:52,744] Trial 9 finished with value: 0.4544948039976743 and parameters: {'w0': 0.8315358919741397, 'w1': 0.8009208999574324, 'w2': 1.033143205941787}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:53,415] Trial 49 finished with value: 0.4025790906106925 and parameters: {'w0': 0.5299698895461252, 'w1': 0.6980276756219344, 'w2': 1.4656262488397722}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:53,497] Trial 43 finished with value: 0.5350223337107369 and parameters: {'w0': 1.5942074382721907, 'w1': 0.9185177350253703, 'w2': 1.3588609559171763}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:54,508] Trial 18 finished with value: 0.5364171577940944 and parameters: {'w0': 1.5086057560612938, 'w1': 0.8389226141176245, 'w2': 1.3081297703149475}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:54,537] Trial 67 finished with value: 0.44813212318836737 and parameters: {'w0': 0.9635468898178415, 'w1': 0.41573554673900637, 'w2': 1.4696563922232682}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:54,910] Trial 16 finished with value: 0.5167165661428883 and parameters: {'w0': 1.298332034787164, 'w1': 0.6173644109577741, 'w2': 1.518934708009405}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:55,322] Trial 12 finished with value: 0.39882883742155123 and parameters: {'w0': 0.6197411196301625, 'w1': 0.8926361784078983, 'w2': 1.1732925748159742}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:55,425] Trial 34 finished with value: 0.49721889678692893 and parameters: {'w0': 1.0264231368176333, 'w1': 0.48324902395509156, 'w2': 1.4128685236714371}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:56,472] Trial 23 finished with value: 0.5179205500641603 and parameters: {'w0': 1.3672761018468056, 'w1': 0.5030173070584243, 'w2': 1.386526769001545}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:56,639] Trial 71 finished with value: 0.5234130047161072 and parameters: {'w0': 1.6300412654453484, 'w1': 0.4665367385043062, 'w2': 1.0495733862158974}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:56,644] Trial 74 finished with value: 0.48130388471463154 and parameters: {'w0': 0.9742219337564856, 'w1': 0.8072936959317416, 'w2': 1.584512902609248}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:57,912] Trial 33 finished with value: 0.3266829436666015 and parameters: {'w0': 0.24937600058310797, 'w1': 0.8078522482919563, 'w2': 1.5996431085861906}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:58,141] Trial 40 finished with value: 0.3548527064028011 and parameters: {'w0': 0.25080392764090487, 'w1': 0.6431962732662664, 'w2': 1.0657722964260623}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:58,828] Trial 27 finished with value: 0.4930248681924115 and parameters: {'w0': 0.7858622132504206, 'w1': 0.6013461005687909, 'w2': 1.1566300267680822}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:59,184] Trial 57 finished with value: 0.4844258869110546 and parameters: {'w0': 0.7746379420712095, 'w1': 0.4390886389334494, 'w2': 1.1821977227223748}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:14:59,533] Trial 36 finished with value: 0.5176291054935621 and parameters: {'w0': 1.2996878531688438, 'w1': 0.8834524913984616, 'w2': 1.689442629906153}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:00,007] Trial 48 finished with value: 0.5365882270995509 and parameters: {'w0': 1.628218452955441, 'w1': 0.9382312779472096, 'w2': 1.6483048102476423}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:00,012] Trial 24 finished with value: 0.473502281769865 and parameters: {'w0': 1.141224671254692, 'w1': 0.9582365416002999, 'w2': 1.434725307758466}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:00,057] Trial 73 finished with value: 0.4883365270577835 and parameters: {'w0': 0.946553469892071, 'w1': 0.6897051941537367, 'w2': 1.5447248434450416}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:00,897] Trial 50 finished with value: 0.3938262422832989 and parameters: {'w0': 0.6312256337847605, 'w1': 0.9772724731700491, 'w2': 1.46888639522799}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:01,005] Trial 62 finished with value: 0.5352308004213044 and parameters: {'w0': 1.420950193441293, 'w1': 0.6693067602676159, 'w2': 1.486819967693497}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:01,184] Trial 68 finished with value: 0.470945377813627 and parameters: {'w0': 0.7533827762364305, 'w1': 0.7403159254104166, 'w2': 1.2881504801705645}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:01,187] Trial 47 finished with value: 0.4283053334120462 and parameters: {'w0': 0.7301652011699165, 'w1': 0.8693086814511204, 'w2': 1.6685462583583353}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:01,656] Trial 59 finished with value: 0.4373342399898773 and parameters: {'w0': 0.5739415890125693, 'w1': 0.44402839766403146, 'w2': 1.2706974842981031}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:01,840] Trial 66 finished with value: 0.4572877786125086 and parameters: {'w0': 1.0040289293744025, 'w1': 0.4052338443960251, 'w2': 1.455603987567523}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:02,009] Trial 61 finished with value: 0.3512723411368574 and parameters: {'w0': 0.3547981341805604, 'w1': 0.5684179328817477, 'w2': 1.5833041402808208}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:02,174] Trial 65 finished with value: 0.5478526845412874 and parameters: {'w0': 1.5019924522401562, 'w1': 0.7248105132723572, 'w2': 1.4207883661091625}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:02,914] Trial 84 finished with value: 0.28592417315641305 and parameters: {'w0': 0.11673085775745627, 'w1': 0.9403626497251817, 'w2': 1.1545347886428525}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:02,950] Trial 63 finished with value: 0.5386673332517636 and parameters: {'w0': 1.4133898661321775, 'w1': 0.5374602837330802, 'w2': 1.226680570435219}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:03,480] Trial 58 finished with value: 0.41973737022006186 and parameters: {'w0': 0.6881813139332933, 'w1': 0.9220573766377527, 'w2': 1.6908783487283903}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:03,863] Trial 25 finished with value: 0.47086509823073014 and parameters: {'w0': 1.0303616445407038, 'w1': 0.9306610124610578, 'w2': 1.1878708217699496}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:04,286] Trial 44 finished with value: 0.4083149523404706 and parameters: {'w0': 0.5588172472473374, 'w1': 0.5314239095428416, 'w2': 1.6299833503532892}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:04,960] Trial 64 finished with value: 0.4541387087937869 and parameters: {'w0': 1.638659373631944, 'w1': 0.4560229646789389, 'w2': 1.6245250715746429}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:06,092] Trial 56 finished with value: 0.4870802049870133 and parameters: {'w0': 0.9171349176386898, 'w1': 0.707002870048339, 'w2': 1.4672583653986488}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:06,134] Trial 39 finished with value: 0.4653422931809258 and parameters: {'w0': 0.8263466927023491, 'w1': 0.6502258397109347, 'w2': 1.5481141317827358}. Best is trial 13 with value: 0.5535757601317933.
+[I 2026-01-10 01:15:07,482] Trial 94 finished with value: 0.5555824127273504 and parameters: {'w0': 1.297481947360487, 'w1': 0.6098793511099241, 'w2': 1.0038734278742003}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:07,676] Trial 54 finished with value: 0.48818346384251426 and parameters: {'w0': 0.8229833489331914, 'w1': 0.690461777651797, 'w2': 1.0865646381057699}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:07,733] Trial 76 finished with value: 0.42760758225968304 and parameters: {'w0': 0.5897226977809108, 'w1': 0.5447162405524298, 'w2': 1.423383672159908}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:08,163] Trial 77 finished with value: 0.30925442642139966 and parameters: {'w0': 0.1139979804630503, 'w1': 0.5445046822043299, 'w2': 1.1579694436977441}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:08,372] Trial 80 finished with value: 0.3719032690389271 and parameters: {'w0': 0.46776112044786067, 'w1': 0.8851479539478574, 'w2': 1.0796630695339602}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:08,664] Trial 72 finished with value: 0.5445192549600623 and parameters: {'w0': 1.2869297469792547, 'w1': 0.6428606791709246, 'w2': 1.1527385382404853}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:08,777] Trial 60 finished with value: 0.47866634874349473 and parameters: {'w0': 0.9243105995439745, 'w1': 0.8179148312136502, 'w2': 1.4811186963040044}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:08,789] Trial 69 finished with value: 0.5244898268233642 and parameters: {'w0': 1.6925578868577003, 'w1': 0.5994598535014241, 'w2': 1.6451010249807532}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:09,290] Trial 85 finished with value: 0.4475448023923846 and parameters: {'w0': 0.8728292223371162, 'w1': 0.9344682054535598, 'w2': 1.6846707555762475}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:09,907] Trial 79 finished with value: 0.3618490061826249 and parameters: {'w0': 0.3957886373356295, 'w1': 0.792731631295337, 'w2': 1.6664799174790663}. Best is trial 94 with value: 0.5555824127273504.
+[I 2026-01-10 01:15:11,541] Trial 70 finished with value: 0.5601837831656656 and parameters: {'w0': 1.6962504593993797, 'w1': 0.6291345575670082, 'w2': 1.1462356482297071}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:11,911] Trial 97 finished with value: 0.3735769954413785 and parameters: {'w0': 0.46894784614353835, 'w1': 0.8408244406002888, 'w2': 1.616962423113156}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,026] Trial 75 finished with value: 0.5378110394702432 and parameters: {'w0': 1.323112825295345, 'w1': 0.6628853273954014, 'w2': 1.4781718332726146}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,345] Trial 86 finished with value: 0.541314773140714 and parameters: {'w0': 1.6327372557205442, 'w1': 0.8988901962476805, 'w2': 1.489944142782135}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,327] Trial 95 finished with value: 0.5504786233768251 and parameters: {'w0': 1.6575617474357556, 'w1': 0.6565354276832671, 'w2': 1.392122350652944}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,486] Trial 96 finished with value: 0.5122433391204209 and parameters: {'w0': 1.1450336884422436, 'w1': 0.8423457018029401, 'w2': 1.475431855406465}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,467] Trial 78 finished with value: 0.35660343340696227 and parameters: {'w0': 0.3535958410198684, 'w1': 0.8768614134672689, 'w2': 1.240447632272485}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,545] Trial 93 finished with value: 0.5477499643224713 and parameters: {'w0': 1.6581999780332601, 'w1': 0.8874015268711308, 'w2': 1.440679921671879}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,597] Trial 82 finished with value: 0.5226171898635897 and parameters: {'w0': 1.4342466221829404, 'w1': 0.9068583904404378, 'w2': 1.6504371951101506}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,602] Trial 91 finished with value: 0.36116363500938187 and parameters: {'w0': 0.3106797908494121, 'w1': 0.7684696214771066, 'w2': 1.2110765004086879}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,657] Trial 81 finished with value: 0.3197635380667481 and parameters: {'w0': 0.13493239896990197, 'w1': 0.6107906111858457, 'w2': 1.0048613146778644}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,659] Trial 83 finished with value: 0.48918111121659386 and parameters: {'w0': 0.8646923569534732, 'w1': 0.4814031347262689, 'w2': 1.1016733615419068}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,666] Trial 88 finished with value: 0.49410272520521253 and parameters: {'w0': 0.9325136567757863, 'w1': 0.7359145421985915, 'w2': 1.3306534171446476}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,680] Trial 89 finished with value: 0.5028028453744782 and parameters: {'w0': 1.3975291946879858, 'w1': 0.943610620404114, 'w2': 1.1353497700678197}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,701] Trial 98 finished with value: 0.4945955484822986 and parameters: {'w0': 1.1551820977766223, 'w1': 0.9695413218831189, 'w2': 1.5633699214367496}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,740] Trial 99 finished with value: 0.47954248426656 and parameters: {'w0': 1.4283876767917998, 'w1': 0.4350948033850891, 'w2': 1.3999865543262144}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,748] Trial 92 finished with value: 0.31156445806597893 and parameters: {'w0': 0.15306813308854358, 'w1': 0.6540276286899511, 'w2': 1.454817981579838}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,749] Trial 87 finished with value: 0.4395741205262532 and parameters: {'w0': 0.6248257466049274, 'w1': 0.7171056377562672, 'w2': 1.2989383106175798}. Best is trial 70 with value: 0.5601837831656656.
+[I 2026-01-10 01:15:12,752] Trial 90 finished with value: 0.3169473551950333 and parameters: {'w0': 0.14365630949656652, 'w1': 0.4076296755391722, 'w2': 1.1955149389603328}. Best is trial 70 with value: 0.5601837831656656.
+Best weights: wide {'w0': 1.6962504593993797, 'w1': 0.6291345575670082, 'w2': 1.1462356482297071}
+Best macro-F1: wide 0.5601837831656656
+0
+50
+100
+150
+200
+250
+300
+350
+400
+450
+500
+550
+Python execution finished at 01:16:41 with exit code: 0
+================================================
+COPYING RESULTS BACK
+================================================
+Job started: 09-01-2026 16:28:40
+Job ended: 10-01-2026 01:16:41
+Job ID: 18212580
+Exit code: 0
+Found 'results' directory. Contents:
+total 1
+drwxr-x---. 2 okooijman okooijman  4096 Jan 10 01:16 .
+drwxr-x---. 3 okooijman okooijman  4096 Jan 10 01:16 ..
+-rw-r-----. 1 okooijman okooijman 29434 Jan 10 01:16 accuracy wide.png
+-rw-r-----. 1 okooijman okooijman 24314 Jan 10 01:16 confusionmatrix wide.png
+-rw-r-----. 1 okooijman okooijman 50094 Jan 10 01:16 loss wide.png
+-rw-r-----. 1 okooijman okooijman 21224 Jan 10 01:16 normalizedconfusionmatrix wide.png
+-rw-r-----. 1 okooijman okooijman 49424 Jan 10 01:16 recall wide.png
+Copying 'results' directory to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/architecture/wide/
+Successfully copied results directory
+Files copied to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/architecture/wide/results/:
+total 2
+drwxr-x---+ 2 okooijman okooijman  4096 Jan 10 01:16 .
+drwxr-x---+ 3 okooijman okooijman  4096 Jan 10 01:16 ..
+-rw-r-----+ 1 okooijman okooijman 29434 Jan 10 01:16 accuracy wide.png
+-rw-r-----+ 1 okooijman okooijman 24314 Jan 10 01:16 confusionmatrix wide.png
+-rw-r-----+ 1 okooijman okooijman 50094 Jan 10 01:16 loss wide.png
+-rw-r-----+ 1 okooijman okooijman 21224 Jan 10 01:16 normalizedconfusionmatrix wide.png
+-rw-r-----+ 1 okooijman okooijman 49424 Jan 10 01:16 recall wide.png
+Job completed at 01:16:41
