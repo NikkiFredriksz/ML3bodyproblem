@@ -1,0 +1,2 @@
+learning_rate,n_estimators,max_depth,min_child_weight,subsample,colsample_bytree,reg_alpha,reg_lambda,gamma,max_delta_step,scale_pos_weight,class_1_weight,threshold
+0.05132287347657943,179,10,8,0.8213261731207427,0.8177651007467134,2.108757045539603,2.1265272618401503,0.7149829729567313,0,0.7465050391822169,2.026525947007278,0.4527687422709486

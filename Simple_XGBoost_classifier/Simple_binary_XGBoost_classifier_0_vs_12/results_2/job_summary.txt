@@ -1,0 +1,24 @@
+Job Summary
+==========
+Job ID: 17329670
+Job Name: xgboost_train3body
+Start Time: 07-12-2025 +13:48:14
+End Time: 07-12-2025 13:58:38
+Exit Code: 0
+Output Directory: results_xgboost_train3body_17329670
+Files Generated:
+total 3
+drwxr-x---. 2 okooijman okooijman    4096 Dec  7 13:58 .
+drwxr-x---. 4 okooijman okooijman    4096 Dec  7 13:58 ..
+-rw-r-----. 1 okooijman okooijman     349 Dec  7 13:58 best_parameters.csv
+-rw-r-----. 1 okooijman okooijman     405 Dec  7 13:58 classification_report.csv
+-rw-r-----. 1 okooijman okooijman     234 Dec  7 13:58 feature_importance.csv
+-rw-r-----. 1 okooijman okooijman  336744 Dec  7 13:58 fig1_optimization_history.png
+-rw-r-----. 1 okooijman okooijman  322104 Dec  7 13:58 fig2_parameter_analysis.png
+-rw-r-----. 1 okooijman okooijman  344289 Dec  7 13:58 fig3_training_analysis.png
+-rw-r-----. 1 okooijman okooijman  278450 Dec  7 13:58 fig4_prediction_analysis.png
+-rw-r-----. 1 okooijman okooijman     150 Dec  7 13:58 final_metrics.csv
+-rw-r-----. 1 okooijman okooijman   60348 Dec  7 13:58 optuna_trials.csv
+-rw-r-----. 1 okooijman okooijman   87384 Dec  7 13:58 optuna_trials_detailed.csv
+-rw-r-----. 1 okooijman okooijman  316942 Dec  7 13:58 study_xgboost_train3body_17329670.pkl
+-rw-r-----. 1 okooijman okooijman 4396965 Dec  7 13:58 xgboost_model_xgboost_train3body.joblib
