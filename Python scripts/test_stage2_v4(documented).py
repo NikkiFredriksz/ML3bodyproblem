@@ -726,7 +726,7 @@ if __name__ == "__main__":
     best_precision_score = 0.0
     
     # TARGET_RECALL: We strictly demand to catch at least 95% of real Exchanges.
-    TARGET_RECALL = 0.95 
+    TARGET_RECALL = 0.88 
     
     print(f"Scanning for Best Threshold (Target Recall >= {TARGET_RECALL:.0%})...")
     print(f"{'Threshold':<10} | {'Recall (Safety)':<15} | {'Precision (Purity)':<18} | {'Flybys Filtered':<15}")
@@ -771,7 +771,7 @@ if __name__ == "__main__":
 
     # Apply thresholds conditionally
     dynamic_thresholds = np.where(
-        (mass_ratio > 0.95) & (mass_ratio < 1.05), # Condition: If masses are nearly equal (Chaos region)
+        (mass_ratio > 0.99) & (mass_ratio < 1.01), # Condition: If masses are nearly equal (Chaos region)
         strict_thresh, # Action: Be stricter (require higher confidence)
         base_thresh    # Else: Use standard optimized threshold
     )

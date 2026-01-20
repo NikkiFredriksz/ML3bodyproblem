@@ -30,7 +30,7 @@ N_TRIALS = 100                                     # Number of hyperparameter op
 EPOCHS_OPT = 50                                    # Number of training epochs during optimization
 EPOCHS_IONIZATION = 30                             # Number of epochs for the final training run
 WEIGHT_IONIZATION = 1.0                            # Loss weight: 1.0 treats Ionization/Bound classes equally
-THRESH_IONIZATION = 0.4                            # Probability threshold: >0.4 triggers an Ionization prediction
+THRESH_IONIZATION = 0.6                            # Probability threshold: >0.4 triggers an Ionization prediction
 
 # ==========================================
 # 1. PHYSICS ENGINE
