@@ -36,8 +36,8 @@ import os
 #inputdata
 n_trials=1
 n_jobs=-1
-epochstry=600
-epochtest=600
+epochstry=3000
+epochtest=3000
 hidden_dims=128
 # # --- Traindata inlezen ---
 # file = r"C:\Users\Lenovo T14 Gen 2\ML3body\ML3bodyproblem\GCdata\train3body.dat"
@@ -49,7 +49,12 @@ hidden_dims=128
 parser = argparse.ArgumentParser()
 parser.add_argument("train_file", type=str, help="path naar train .dat")
 parser.add_argument("test_file",  type=str, help="path naar test .dat")
-#parser.add_argument("Keyword", type=str, help="The model keyword")
+parser.add_argument(
+    "--weight-decay",
+    type=float,
+    default=1e-4,
+    help="L2 regularization strength"
+)
 args = parser.parse_args()
 
 # ----------------------
