@@ -262,6 +262,21 @@ plt.ylabel("accuracy")
 plt.title("NN Accuracy "+study_name)
 plt.savefig("./results/accuracy "+study_name)
 
+plt.figure()
+with torch.no_grad():
+    preds = torch.argmax(model(X_test), dim=1).numpy()
+    y_true = y_test.numpy()
+
+cm = confusion_matrix(y_true, preds)
+disp = ConfusionMatrixDisplay.from_predictions(
+    y_true, preds,
+    display_labels=[0,1,2],
+    cmap=plt.cm.Blues
+    )
+disp.plot(cmap=plt.cm.Blues)
+plt.title(f'Confusion Matrix (lr={lr}) ' +study_name)
+plt.savefig("./results/confusionmatrixnonnormalized "+study_name
+            
 
 plt.figure(figsize=(10,6))
 for lr_idx, lr in enumerate(learningrates):
