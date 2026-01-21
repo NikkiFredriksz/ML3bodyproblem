@@ -225,7 +225,7 @@ for lr_idx, lr in enumerate(learningrates):
         
 
 #%%
-study_name=["long run"]
+study_name="long run"
 os.makedirs("results", exist_ok=True)
 plt.figure()
 with torch.no_grad():
