@@ -1,0 +1,120 @@
+Job started at 21-01-2026 13:28:14
+Working directory: /scratch-local/okooijman.18533655
+Submission directory: /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Very_deep_256_10
+Job ID: 18533655
+================================================
+JOB PARAMETERS
+================================================
+Python script: naarsupercomp6deep_256_10.py
+Training file: train3body.dat
+Test file: test3body.dat
+Weight decay: 0.0001
+Job name: ml_naarsupercomp6deep_256_10_20260121_132753
+================================================
+Copying input files to working directory
+Files copied successfully
+Files in working directory:
+total 257
+drwxr-x---.   2 okooijman okooijman     4096 Jan 21 13:28 .
+drwxrwxrwt. 345 root      root        262144 Jan 21 13:28 ..
+-rw-r-----.   1 okooijman okooijman     9277 Jan 21 13:28 naarsupercomp6deep_256_10.py
+-rw-r-----.   1 okooijman okooijman  9785229 Jan 21 13:28 test3body.dat
+-rw-r-----.   1 okooijman okooijman 39137889 Jan 21 13:28 train3body.dat
+Starting Python script at 13:28:16
+/gpfs/scratch1/nodespecific/tcn1101/okooijman.18533655/naarsupercomp6deep_256_10.py:63: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df = pd.read_csv(args.train_file, delim_whitespace=True, header=0)
+/gpfs/scratch1/nodespecific/tcn1101/okooijman.18533655/naarsupercomp6deep_256_10.py:64: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df_test = pd.read_csv(args.test_file, delim_whitespace=True, header=0)
+/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+0
+50
+100
+150
+200
+250
+300
+350
+400
+450
+500
+550
+600
+650
+700
+750
+800
+850
+900
+950
+1000
+1050
+1100
+1150
+1200
+1250
+1300
+1350
+1400
+1450
+1500
+1550
+1600
+1650
+1700
+1750
+1800
+1850
+1900
+1950
+2000
+2050
+2100
+2150
+2200
+2250
+2300
+2350
+2400
+2450
+2500
+2550
+2600
+2650
+2700
+2750
+2800
+2850
+2900
+2950
+Python execution finished at 14:28:59 with exit code: 0
+================================================
+COPYING RESULTS BACK
+================================================
+Job started: 21-01-2026 13:28:14
+Job ended: 21-01-2026 14:28:59
+Job ID: 18533655
+Exit code: 0
+Found 'results' directory. Contents:
+total 1
+drwxr-x---. 2 okooijman okooijman  4096 Jan 21 14:28 .
+drwxr-x---. 3 okooijman okooijman  4096 Jan 21 14:28 ..
+-rw-r-----. 1 okooijman okooijman 49397 Jan 21 14:28 accuracy long run.png
+-rw-r-----. 1 okooijman okooijman 21038 Jan 21 14:28 confusionmatrix long run.png
+-rw-r-----. 1 okooijman okooijman 25472 Jan 21 14:28 loss long run.png
+-rw-r-----. 1 okooijman okooijman 67850 Jan 21 14:28 recall long run.png
+Copying 'results' directory to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Very_deep_256_10/
+Successfully copied results directory
+Files copied to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Very_deep_256_10/results/:
+total 2
+drwxr-x---+ 2 okooijman okooijman  4096 Jan 21 14:28 .
+drwxr-x---+ 3 okooijman okooijman  4096 Jan 21 14:28 ..
+-rw-r-----+ 1 okooijman okooijman 49397 Jan 21 14:28 accuracy long run.png
+-rw-r-----+ 1 okooijman okooijman 21038 Jan 21 14:28 confusionmatrix long run.png
+-rw-r-----+ 1 okooijman okooijman 25472 Jan 21 14:28 loss long run.png
+-rw-r-----+ 1 okooijman okooijman 67850 Jan 21 14:28 recall long run.png
+Job completed at 14:28:59
