@@ -168,6 +168,36 @@ class SimpleNN(nn.Module):
 
         nn.Linear(hidden_dim, hidden_dim),
         nn.ReLU(),
+
+        nn.Linear(input_dim, hidden_dim),
+        nn.ReLU(),
+    
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+    
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+        
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+        
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+        
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+        
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
+
+        nn.Linear(hidden_dim, hidden_dim),
+        nn.ReLU(),
     
         nn.Linear(hidden_dim, 3)
         )

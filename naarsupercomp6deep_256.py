@@ -36,8 +36,8 @@ import os
 #inputdata
 n_trials=1
 n_jobs=-1
-epochstry=3000
-epochtest=3000
+epochstry=750
+epochtest=750
 hidden_dims=256
 # # --- Traindata inlezen ---
 # file = r"C:\Users\Lenovo T14 Gen 2\ML3body\ML3bodyproblem\GCdata\train3body.dat"
