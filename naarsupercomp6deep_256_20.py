@@ -296,7 +296,7 @@ disp = ConfusionMatrixDisplay.from_predictions(
     )
 disp.plot(cmap=plt.cm.Blues)
 plt.title(f'Confusion Matrix (lr={lr}) ' +study_name)
-plt.savefig("./results/confusionmatrixnonnormalized "+study_name
+plt.savefig("./results/confusionmatrixnonnormalized "+study_name)
             
 plt.figure(figsize=(10,6))
 for lr in learningrates:

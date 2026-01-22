@@ -1,0 +1,11 @@
+Job Summary
+==========
+Job ID: 18587646
+Job Name: ml_naarsupercomp6deep_512_20260122_152828
+Start Time: 22-01-2026 15:29:05
+End Time: 22-01-2026 15:57:15
+Exit Code: 0
+Weight Decay: 0.0001
+Python Script: naarsupercomp6deep_512.py
+Training File: train3body.dat
+Test File: test3body.dat

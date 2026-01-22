@@ -1,0 +1,46 @@
+Job started at 22-01-2026 15:07:45
+Working directory: /scratch-local/okooijman.18571398
+Submission directory: /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Lower_epochs/256_7
+Job ID: 18571398
+================================================
+JOB PARAMETERS
+================================================
+Python script: naarsupercomp6deep_256.py
+Training file: train3body.dat
+Test file: test3body.dat
+Weight decay: 0.0001
+Job name: ml_naarsupercomp6deep_256_20260122_150715
+================================================
+Copying input files to working directory
+Files copied successfully
+Files in working directory:
+total 129
+drwxr-x---.  2 okooijman okooijman     4096 Jan 22 15:07 .
+drwxrwxrwt. 55 root      root        131072 Jan 22 15:07 ..
+-rw-r-----.  1 okooijman okooijman     9534 Jan 22 15:07 naarsupercomp6deep_256.py
+-rw-r-----.  1 okooijman okooijman  9785229 Jan 22 15:07 test3body.dat
+-rw-r-----.  1 okooijman okooijman 39137889 Jan 22 15:07 train3body.dat
+Starting Python script at 15:07:45
+  File "/gpfs/scratch1/nodespecific/tcn1163/okooijman.18571398/naarsupercomp6deep_256.py", line 260
+    plt.savefig("./results/confusionmatrixnonnormalized "+study_name
+               ^
+SyntaxError: '(' was never closed
+Python execution finished at 15:07:45 with exit code: 1
+================================================
+COPYING RESULTS BACK
+================================================
+Job started: 22-01-2026 15:07:45
+Job ended: 22-01-2026 15:07:45
+Job ID: 18571398
+Exit code: 1
+WARNING: 'results' directory not found!
+Current directory contents:
+total 129
+drwxr-x---.  2 okooijman okooijman     4096 Jan 22 15:07 .
+drwxrwxrwt. 55 root      root        131072 Jan 22 15:07 ..
+-rw-r-----.  1 okooijman okooijman     9534 Jan 22 15:07 naarsupercomp6deep_256.py
+-rw-r-----.  1 okooijman okooijman  9785229 Jan 22 15:07 test3body.dat
+-rw-r-----.  1 okooijman okooijman 39137889 Jan 22 15:07 train3body.dat
+Attempting to copy any result files...
+Any available files copied to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Lower_epochs/256_7/results_18571398/
+Job completed at 15:07:45

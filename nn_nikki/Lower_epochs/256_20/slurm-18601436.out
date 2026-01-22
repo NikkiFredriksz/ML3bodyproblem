@@ -1,0 +1,68 @@
+Job started at 22-01-2026 15:44:44
+Working directory: /scratch-local/okooijman.18601436
+Submission directory: /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Lower_epochs/256_20
+Job ID: 18601436
+================================================
+JOB PARAMETERS
+================================================
+Python script: naarsupercomp6deep_256_20.py
+Training file: train3body.dat
+Test file: test3body.dat
+Weight decay: 0.0001
+Job name: ml_naarsupercomp6deep_256_20_20260122_154422
+================================================
+Copying input files to working directory
+Files copied successfully
+Files in working directory:
+total 257
+drwxr-x---.   2 okooijman okooijman     4096 Jan 22 15:44 .
+drwxrwxrwt. 293 root      root        262144 Jan 22 15:44 ..
+-rw-r-----.   1 okooijman okooijman    10432 Jan 22 15:44 naarsupercomp6deep_256_20.py
+-rw-r-----.   1 okooijman okooijman  9785229 Jan 22 15:44 test3body.dat
+-rw-r-----.   1 okooijman okooijman 39137889 Jan 22 15:44 train3body.dat
+Starting Python script at 15:44:47
+/gpfs/scratch1/nodespecific/tcn1181/okooijman.18601436/naarsupercomp6deep_256_20.py:63: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df = pd.read_csv(args.train_file, delim_whitespace=True, header=0)
+/gpfs/scratch1/nodespecific/tcn1181/okooijman.18601436/naarsupercomp6deep_256_20.py:64: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df_test = pd.read_csv(args.test_file, delim_whitespace=True, header=0)
+Traceback (most recent call last):
+  File "/gpfs/scratch1/nodespecific/tcn1181/okooijman.18601436/naarsupercomp6deep_256_20.py", line 236, in <module>
+    logits = model(X_train)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/gpfs/scratch1/nodespecific/tcn1181/okooijman.18601436/naarsupercomp6deep_256_20.py", line 205, in forward
+    return self.net(x)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (155718x256 and 24x256)
+Python execution finished at 15:44:56 with exit code: 1
+================================================
+COPYING RESULTS BACK
+================================================
+Job started: 22-01-2026 15:44:44
+Job ended: 22-01-2026 15:44:56
+Job ID: 18601436
+Exit code: 1
+WARNING: 'results' directory not found!
+Current directory contents:
+total 257
+drwxr-x---.   2 okooijman okooijman     4096 Jan 22 15:44 .
+drwxrwxrwt. 293 root      root        262144 Jan 22 15:44 ..
+-rw-r-----.   1 okooijman okooijman    10432 Jan 22 15:44 naarsupercomp6deep_256_20.py
+-rw-r-----.   1 okooijman okooijman  9785229 Jan 22 15:44 test3body.dat
+-rw-r-----.   1 okooijman okooijman 39137889 Jan 22 15:44 train3body.dat
+Attempting to copy any result files...
+Any available files copied to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Lower_epochs/256_20/results_18601436/
+Job completed at 15:44:56

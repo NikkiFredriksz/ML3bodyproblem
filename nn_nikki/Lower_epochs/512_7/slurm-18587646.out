@@ -1,0 +1,75 @@
+Job started at 22-01-2026 15:29:05
+Working directory: /scratch-local/okooijman.18587646
+Submission directory: /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Lower_epochs/512_7
+Job ID: 18587646
+================================================
+JOB PARAMETERS
+================================================
+Python script: naarsupercomp6deep_512.py
+Training file: train3body.dat
+Test file: test3body.dat
+Weight decay: 0.0001
+Job name: ml_naarsupercomp6deep_512_20260122_152828
+================================================
+Copying input files to working directory
+Files copied successfully
+Files in working directory:
+total 129
+drwxr-x---.  2 okooijman okooijman     4096 Jan 22 15:29 .
+drwxrwxrwt. 79 root      root        131072 Jan 22 15:28 ..
+-rw-r-----.  1 okooijman okooijman     9519 Jan 22 15:29 naarsupercomp6deep_512.py
+-rw-r-----.  1 okooijman okooijman  9785229 Jan 22 15:29 test3body.dat
+-rw-r-----.  1 okooijman okooijman 39137889 Jan 22 15:29 train3body.dat
+Starting Python script at 15:29:08
+/gpfs/scratch1/nodespecific/tcn784/okooijman.18587646/naarsupercomp6deep_512.py:63: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df = pd.read_csv(args.train_file, delim_whitespace=True, header=0)
+/gpfs/scratch1/nodespecific/tcn784/okooijman.18587646/naarsupercomp6deep_512.py:64: FutureWarning: The 'delim_whitespace' keyword in pd.read_csv is deprecated and will be removed in a future version. Use ``sep='\s+'`` instead
+  df_test = pd.read_csv(args.test_file, delim_whitespace=True, header=0)
+/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+/home/okooijman/anaconda3/envs/xgboost_ml/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+0
+50
+100
+150
+200
+250
+300
+350
+400
+450
+500
+550
+600
+650
+700
+Python execution finished at 15:57:15 with exit code: 0
+================================================
+COPYING RESULTS BACK
+================================================
+Job started: 22-01-2026 15:29:05
+Job ended: 22-01-2026 15:57:15
+Job ID: 18587646
+Exit code: 0
+Found 'results' directory. Contents:
+total 1
+drwxr-x---. 2 okooijman okooijman  4096 Jan 22 15:57 .
+drwxr-x---. 3 okooijman okooijman  4096 Jan 22 15:57 ..
+-rw-r-----. 1 okooijman okooijman 35417 Jan 22 15:57 accuracy long run.png
+-rw-r-----. 1 okooijman okooijman 21740 Jan 22 15:57 confusionmatrix long run.png
+-rw-r-----. 1 okooijman okooijman 24234 Jan 22 15:57 confusionmatrixnonnormalized long run.png
+-rw-r-----. 1 okooijman okooijman 22285 Jan 22 15:57 loss long run.png
+-rw-r-----. 1 okooijman okooijman 57168 Jan 22 15:57 recall long run.png
+Copying 'results' directory to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Lower_epochs/512_7/
+Successfully copied results directory
+Files copied to /gpfs/home3/okooijman/MLCourse/Neural_networks/nn_Nikki/Lower_epochs/512_7/results/:
+total 2
+drwxr-x---+ 2 okooijman okooijman  4096 Jan 22 15:57 .
+drwxr-x---+ 4 okooijman okooijman  4096 Jan 22 15:57 ..
+-rw-r-----+ 1 okooijman okooijman 35417 Jan 22 15:57 accuracy long run.png
+-rw-r-----+ 1 okooijman okooijman 21740 Jan 22 15:57 confusionmatrix long run.png
+-rw-r-----+ 1 okooijman okooijman 24234 Jan 22 15:57 confusionmatrixnonnormalized long run.png
+-rw-r-----+ 1 okooijman okooijman 22285 Jan 22 15:57 loss long run.png
+-rw-r-----+ 1 okooijman okooijman 57168 Jan 22 15:57 recall long run.png
+Job completed at 15:57:15

@@ -1,0 +1,11 @@
+Job Summary
+==========
+Job ID: 18571409
+Job Name: ml_naarsupercomp6deep_256_10_20260122_150745
+Start Time: 22-01-2026 15:08:15
+End Time: 22-01-2026 15:08:16
+Exit Code: 1
+Weight Decay: 0.0001
+Python Script: naarsupercomp6deep_256_10.py
+Training File: train3body.dat
+Test File: test3body.dat
