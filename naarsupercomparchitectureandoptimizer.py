@@ -271,7 +271,7 @@ for validation in validations:
             weights_tensor = torch.tensor(weights, dtype=torch.float32)
         
             # Nieuw model voor elke trial
-            model = SimpleNN(input_dim=X_train.shape[1], hidden_dim=32)
+            model = SimpleNN(input_dim=X_train.shape[1], hidden_dim=hiddendim)
             optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
             criterion = nn.CrossEntropyLoss(weight=weights_tensor)
         
